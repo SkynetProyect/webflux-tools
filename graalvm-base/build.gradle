@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.graalvm.buildtools.native' version '0.10.4'
+}
+
+group = 'com.graalvm'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // WebFlux (reactive web, includes reactive WebSocket support)
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // Reactive data with R2DBC
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+
+    // H2 R2DBC driver (available at runtime AND test)
+    runtimeOnly 'io.r2dbc:r2dbc-h2'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
