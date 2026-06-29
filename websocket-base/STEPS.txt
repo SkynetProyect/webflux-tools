@@ -7,3 +7,17 @@ da respuesta entonces ya puedes usar:  ./gradlew nativeCompile
 
 this will generate a list of files in build/native/nativeCompile
 you have to keep them together, as it is code and libraries compiled.
+
+how to test:
+
+from linux install:
+curl -LO https://github.com/vi/websocat/releases/latest/download/websocat.x86_64-unknown-linux-musl
+chmod +x websocat.x86_64-unknown-linux-musl
+sudo mv websocat.x86_64-unknown-linux-musl /usr/local/bin/websocat
+
+once is done run in commands:
+
+websocat -v ws://localhost:8080/ws
+
+
+then just write and send the object.
