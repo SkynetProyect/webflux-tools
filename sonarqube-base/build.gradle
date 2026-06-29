@@ -3,7 +3,9 @@ plugins {
     id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.graalvm.buildtools.native' version '0.10.4'
-
+    
+    id "org.sonarqube" version "7.1.0.6387"
+    id 'jacoco'
 }
 
 group = 'com.graalvm'
@@ -39,3 +41,23 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
+
+def env = file('.env').readLines()
+    .findAll { it.contains('=') && !it.startsWith('#') }
+    .collectEntries { line ->
+        def (key, value) = line.split('=', 2)
+        [key.trim(), value.trim()]
+    }
+
+sonar {
+    properties {
+        property "sonar.projectKey", env['SONAR_PROJECTKEY']
+        property "sonar.host.url", env['SONAR_URL']
+        property "sonar.token", env['SONAR_TOKEN']
+    }
+}

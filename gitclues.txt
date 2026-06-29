@@ -1,0 +1,17 @@
+for problems like there is a large file that should be took by git but it was, it can be deleted from the cache.
+the error looks like this:
+
+remote: Resolving deltas: 100% (202/202), completed with 1 local object.
+remote: error: Trace: 368af2ed7dda67fedf01a83159079cbf898e01c921105a8fc247bddc70c28af2
+remote: error: See https://gh.io/lfs for more information.
+remote: error: File protobuf-base/build/native/nativeCompile/compilationTEST is 108.72 MB; this exceeds GitHub's file size limit of 100.00 MB
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+To https://github.com/SkynetProyect/webflux-tools.git
+ ! [remote rejected] main -> main (pre-receive hook declined)
+
+
+ solution is like this:
+
+git rm -r --cached protobuf-base/build/
+git commit -m "remove build files"
+git push
