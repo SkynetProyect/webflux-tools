@@ -1,0 +1,9 @@
+Asegurarse de estar usando una version del jdk con graalvm.
+
+sdk use java 21.0.2-graalce
+
+si este comando:  native-image --version
+da respuesta entonces ya puedes usar:  ./gradlew nativeCompile
+
+this will generate a list of files in build/native/nativeCompile
+you have to keep them together, as it is code and libraries compiled.

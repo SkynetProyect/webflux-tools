@@ -1,0 +1,33 @@
+get the location of topics file in server:
+
+docker exec kafka find / -name kafka-topics.sh 2>/dev/null
+
+it will give you a route you must go to it inside the container
+
+access docker container:
+docker exec -it kafka bash
+
+create topic:
+
+./kafka-topics.sh \
+	--create \
+	--topic leninospina \
+	--bootstrap-server localhost:9092
+
+verify topic existence:
+
+./kafka-topics.sh \
+	--list \
+	--bootstrap-server localhost:9092
+
+
+watch live messages arriving:
+
+./kafka-console-consumer.sh --topic leninospina \
+	--bootstrap-server localhost:9092
+
+send message manualy to topic:
+
+./kafka-console-producer.sh \
+  --topic orders \
+  --bootstrap-server localhost:9092
