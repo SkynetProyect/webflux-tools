@@ -1,0 +1,72 @@
+Asegurarse de estar usando una version del jdk con graalvm.
+
+sdk use java 21.0.2-graalce
+
+si este comando:  native-image --version
+da respuesta entonces ya puedes usar:  ./gradlew nativeCompile
+
+this will generate a list of files in build/native/nativeCompile
+you have to keep them together, as it is code and libraries compiled.
+
+check if metrics are being recorded:
+
+http://localhost:9090/targets - prometheus
+
+check if grapahana is working
+
+http://localhost:9090/targets 
+
+check if tempo is working:
+
+curl http://localhost:3200/ready
+
+add prometheus to grapahana
+server url = http://prometheus:9090
+
+add tempo to graphana
+server url = http://tempo:3200
+
+prometheus queries:
+
+    # cpu usage
+    process_cpu_usage
+
+    # active db connections
+    r2dbc_pool_acquired_connections
+
+    # pending requests
+    r2dbc_pool_pending_acquired_connections
+
+    # live threads
+    jvm_threads_live_threads
+
+    # daemon threads
+    jvm_threads_daemon_threads
+
+    # heap used
+    jvm_memory_used_bytes{area="heap"}
+
+    # non heap
+    jvm_memory_used_bytes{area="nonheap"}
+
+    # max available
+    jvm_memory_max_bytes{area="heap"}
+
+    # total requests per endpoint
+    http_server_requests_seconds_count
+
+    # average response time
+    rate(http_server_requests_seconds_sum[1m]) / rate(http_server_requests_seconds_count[1m])
+
+    # requests per second
+    rate(http_server_requests_seconds_count[1m])
+
+    # errors only (5xx)
+    http_server_requests_seconds_count{status=~"5.."}
+
+    # slow requests (p99 latency)
+    histogram_quantile(0.99, rate(http_server_requests_seconds_bucket[1m]))
+
+Graphana dashboard id on import for this springboot prometheus version is: 19004
+for tempo use: 17175
+

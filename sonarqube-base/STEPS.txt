@@ -9,6 +9,6 @@ this will generate a list of files in build/native/nativeCompile
 you have to keep them together, as it is code and libraries compiled.
 
 colocar las variables de acceso a sonarqube adentro de .env
-Generate coverage:
+Generate coverage y enviar a sonar:
 
 ./gradlew test jacocoTestReport sonar
