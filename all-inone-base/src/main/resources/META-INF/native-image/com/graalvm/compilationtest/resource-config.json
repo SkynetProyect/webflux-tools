@@ -1,0 +1,14 @@
+{
+  "resources": {
+    "includes": [
+      { "pattern": "\\Qorg/springframework/ws/transport/http/MessageDispatcherServlet.properties\\E" },
+      { "pattern": "\\Qorg/springframework/ws/client/core/WebServiceTemplate.properties\\E" },
+      { "pattern": "\\Qorg/springframework/ws/server/MessageDispatcher.properties\\E" },
+      { "pattern": "\\Qorg/springframework/ws/soap/server/SoapMessageDispatcher.properties\\E" },
+      { "pattern": "\\QMETA-INF/services/javax.wsdl.factory.WSDLFactory\\E" },
+      { "pattern": "\\Qobjetos.xsd\\E" },
+      { "pattern": "\\Qschema.sql\\E" },
+      { "pattern": "\\Qbanner.txt\\E" }
+    ]
+  }
+}
