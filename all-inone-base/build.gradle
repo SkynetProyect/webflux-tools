@@ -24,7 +24,6 @@ repositories {
 
 dependencies {
     // imperative normal springboot ( needed for SOAP)
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'wsdl4j:wsdl4j'
     // WebFlux (reactive web, includes reactive WebSocket support)

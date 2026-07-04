@@ -5,7 +5,7 @@
            elementFormDefault="qualified">
 
     <!-- REQUEST -->
-    <xs:element name="GetObjetoById">
+    <xs:element name="GetObjetoByIdRequest">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="id" type="xs:long"/>
@@ -14,11 +14,11 @@
     </xs:element>
 
     <!-- RESPONSE -->
-    <xs:element name="Objeto">
+    <xs:element name="GetObjetoByIdResponse">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="id" type="xs:long"/>
-                <xs:element name="name" type="xs:string" minOccurs="0"/>
+                <xs:element name="nombre" type="xs:string" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

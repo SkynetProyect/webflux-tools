@@ -15,6 +15,12 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.XsdSchema;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.core.io.ClassPathResource;
+import javax.xml.stream.XMLStreamException;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringReader;
 
 @Endpoint
 public class ObjetoSOAPController {
@@ -29,68 +35,69 @@ public class ObjetoSOAPController {
 
     /* Este metodo es para recibir data en XML, transformar esa data a un objeto java, 
     hacer una peticion get asincrona y devolver el objeto de nuevo como xml */
-    @PayloadRoot(namespace = NAMESPACE, localPart = "GetObjetoById")
+    @PayloadRoot(namespace = NAMESPACE, localPart = "GetObjetoByIdRequest")
     @ResponsePayload
-    public Source getObjeto(@RequestPayload Source requestPayload) { 
+    public Source getObjeto(@RequestPayload Source requestPayload) throws Exception {
+
         Objeto request = parse(requestPayload);
         Objeto objeto = service.readById(request.getId()).block();
         return getObjetoResponse(objeto);
     }
-
 
     // metodos de parseo manual - law is to avoid reflection at all costs
     private Source getObjetoResponse(Objeto objeto) {
 
         StringWriter writer = new StringWriter();
 
-        writer.append("<obj:Objeto xmlns:obj=\"http://example.com/Objetos\">");
+        writer.append("<obj:GetObjetoByIdResponse xmlns:obj=\"http://example.com/Objetos\">");
 
         writer.append("<obj:id>")
             .append(String.valueOf(objeto.getId()))
             .append("</obj:id>");
 
-        writer.append("<obj:name>")
+        writer.append("<obj:nombre>")
             .append(objeto.getNombre())
-            .append("</obj:name>");
+            .append("</obj:nombre>");
 
-        writer.append("</obj:Objeto>");
+        writer.append("</obj:GetObjetoByIdResponse>");
 
         return new StreamSource(new java.io.StringReader(writer.toString()));
     }
 
-    
     private Objeto parse(Source source) throws Exception {
 
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        XMLStreamReader reader = factory.createXMLStreamReader(source);
+    // Normalize any Source type (DOMSource, SAXSource, etc.) into a StreamSource
+    StringWriter writer = new StringWriter();
+    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+    transformer.transform(source, new StreamResult(writer));
 
-        Objeto request = new Objeto();
+    Source streamSource = new StreamSource(new StringReader(writer.toString()));
 
-        while (reader.hasNext()) {
-            int event = reader.next();
+    XMLInputFactory factory = XMLInputFactory.newInstance();
+    XMLStreamReader reader = factory.createXMLStreamReader(streamSource);
 
-            if (event == XMLStreamConstants.START_ELEMENT) {
+    Objeto request = new Objeto();
 
-                String tag = reader.getLocalName();
+    while (reader.hasNext()) {
+        int event = reader.next();
 
-                switch (tag) {
+        if (event == XMLStreamConstants.START_ELEMENT) {
+            String tag = reader.getLocalName();
 
-                    case "id":
-                        request.setId(Long.parseLong(reader.getElementText()));
-                        break;
-
-                    case "name":
-                        request.setNombre(reader.getElementText());
-                        break;
-
-                    default:
-                        // ignore unknown tags
-                        break;
-                }
+            switch (tag) {
+                case "id":
+                    request.setId(Long.parseLong(reader.getElementText()));
+                    break;
+                case "nombre":
+                    request.setNombre(reader.getElementText());
+                    break;
+                default:
+                    break;
             }
         }
+    }
 
-        return request;
+    return request;
     }
 
 }
