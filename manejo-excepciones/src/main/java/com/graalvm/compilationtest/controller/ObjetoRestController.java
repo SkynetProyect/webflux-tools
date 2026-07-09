@@ -37,8 +37,9 @@ public class ObjetoRestController {
     }
     
     @GetMapping("/all")
-    public Flux<ResponseEntity<Respuesta>> readAll() {
+    public Mono<ResponseEntity<Respuesta>> readAll() {
         return objetoService.readAll()
+                .collectList()
                 .map( retorno -> ResponseEntity
                                 .status(HttpStatus.OK)
                                 .body(new Respuesta(

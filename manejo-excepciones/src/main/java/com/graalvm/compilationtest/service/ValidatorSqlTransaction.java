@@ -194,9 +194,9 @@ public class ValidatorSqlTransaction {
 
         if (partes.length >= 4) {
             return partes[1]
-                    + "\n"
+                    + "#"
                     + partes[2]
-                    + "\n"
+                    + "#"
                     + partes[3];
         }
 
