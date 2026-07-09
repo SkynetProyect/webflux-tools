@@ -22,10 +22,10 @@ repositories {
 }
 
 dependencies {
-    // WebFlux (reactive web, includes reactive WebSocket support)
+    // Necesarias
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    // Reactive data with R2DBC
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     // H2 R2DBC driver (available at runtime AND test)
     runtimeOnly 'io.r2dbc:r2dbc-h2'
     // Testing
@@ -34,8 +34,6 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     // Swagger for Rest webflux
     implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0'
-
-    
 
 }
 

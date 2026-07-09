@@ -1,28 +1,19 @@
 package com.graalvm.compilationtest.excepciones;
 
-public class DatosInvalidosException extends RuntimeException {
+public class SqlTransactionException extends RuntimeException {
 
     private final String codigo;
-    private final String campo;
     private final String clase;
     private final String metodo;
     private final String mensaje;
 
-    public DatosInvalidosException(
-            String codigo,
-            String message,
-            String campo,
-            String clase,
-            String metodo) {
-
+    public SqlTransactionException(String codigo, String message, String clase, String metodo) {
         super(message);
-        this.codigo = codigo;
         this.mensaje = message;
-        this.campo = campo;
         this.clase = clase;
         this.metodo = metodo;
+        this.codigo = codigo;
     }
-
 
     public String getCodigo() {
         return codigo;
@@ -33,10 +24,8 @@ public class DatosInvalidosException extends RuntimeException {
     public String getMetodo(){
         return metodo;
     }
-    public String getCampo() {
-        return campo;
-    }
     public String getMessage() {
         return mensaje;
     }
+
 }
