@@ -21,13 +21,16 @@ public class ObjetoService implements ObjetoServiceInterface{
 
     @Override
     public Mono<Objeto> create(Objeto objeto) {
+
         return objetoRepository.save(objeto)
             .doOnNext(guardado -> 
-                objetoCache.agregar(guardado.getId(), guardado.getNombre()));
+                objetoCache.agregar(guardado.getId(), guardado.getNombre()))
+            .onE;
     }
     
     @Override
     public Mono<Objeto> readById(Long id){
+
         return objetoCache.buscarId(id)
             .flatMap( identificador -> {
                 if(identificador<0){

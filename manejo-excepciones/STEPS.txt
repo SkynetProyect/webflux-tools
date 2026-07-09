@@ -1,0 +1,22 @@
+Asegurarse de estar usando una version del jdk con graalvm.
+
+sdk use java 21.0.2-graalce
+
+IF YOU GET THIS ERROR:
+
+Error: Default native-compiler executable 'gcc' not found via environment variable PATH
+------------------------------------------------------------------------------------------------------------------------
+Error: To prevent native-toolchain checking provide command-line option -H:-CheckToolchain
+                        0.5s (11.0% of total time) in 16 GCs | Peak RSS: 0.77GB | CPU load: 6.31
+========================================================================================================================
+Finished generating 'compilationTEST' in 3.5s.
+
+RUN:
+sudo apt update
+sudo apt install build-essential
+
+si este comando:  native-image --version
+da respuesta entonces ya puedes usar:  ./gradlew nativeCompile
+
+this will generate a list of files in build/native/nativeCompile
+you have to keep them together, as it is code and libraries compiled.
