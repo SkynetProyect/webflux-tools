@@ -9,4 +9,4 @@ RUN ./gradlew nativeCompile --no-daemon
 FROM gcr.io/distroless/cc-debian12:latest
 COPY --from=debian:12-slim /lib/x86_64-linux-gnu/libz.so.1 /lib/x86_64-linux-gnu/libz.so.1
 COPY --from=builder /app/build/native/nativeCompile/ /app/
-ENTRYPOINT ["/app/compilationTEST"]
+ENTRYPOINT ["/app/compilationtest","-XX:MinHeapSize=256m","-XX:MaxHeapSize=256m","-XX:MaxRAM=406m"]

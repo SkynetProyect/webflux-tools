@@ -8,6 +8,10 @@ import com.graalvm.compilationtest.service.objeto.ValidatorObjeto;
 import com.graalvm.compilationtest.service.ValidatorSqlTransaction;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
+import com.graalvm.compilationtest.excepciones.DatosInvalidosException;
+import java.time.Duration;
+
+
 
 @Service
 public class ObjetoService implements ObjetoServiceInterface{
@@ -25,19 +29,22 @@ public class ObjetoService implements ObjetoServiceInterface{
     public Mono<Objeto> create(Objeto objeto) {
         return validador.create(objeto)
             .flatMap(objetoRepository::save)
+            .timeout(Duration.ofSeconds(2))
+            .switchIfEmpty(Mono.error(new DatosInvalidosException("R_EDI","Retorno vacio","empty","ObjetoService","readById")))
             .onErrorMap(e -> validadorsql.detectarMotivoError(e,"ObjetoService","create"));
-            
-
     }
     @Override
     public Mono<Objeto> readById(Long id){
         return validador.readById(id)
             .flatMap(objetoRepository::findById)
+            .timeout(Duration.ofSeconds(2))
+            .switchIfEmpty(Mono.error(new DatosInvalidosException("R_EDI","Retorno vacio","empty","ObjetoService","readById")))
             .onErrorMap(e -> validadorsql.detectarMotivoError(e,"ObjetoService","readById"));
     }
     @Override
     public Flux<Objeto> readAll() {
         return objetoRepository.findAll()
+                .timeout(Duration.ofSeconds(2))
                 .onErrorMap(e -> validadorsql.detectarMotivoError(e,"ObjetoService","readAll"));
     
     }
@@ -45,19 +52,17 @@ public class ObjetoService implements ObjetoServiceInterface{
     public Mono<Objeto> update(Objeto objeto){
         return validador.update(objeto) 
             .flatMap(objetoRepository::save)
+            .timeout(Duration.ofSeconds(2))
+            .switchIfEmpty(Mono.error(new DatosInvalidosException("R_EDI","Retorno vacio","empty","ObjetoService","readById")))
             .onErrorMap(e -> validadorsql.detectarMotivoError(e,"ObjetoService","update"));
     }
     @Override
     public Mono<Boolean> delete(Long id) {
         return validador.delete(id)
-            .flatMap(objetoRepository::existsById)
-                .flatMap(exists -> {
-                    if (!exists) {
-                        return Mono.just(false);
-                    }
-                    return objetoRepository.deleteById(id)
-                            .thenReturn(true);
-                })
+            .flatMap(objetoRepository::deleteById)
+            .thenReturn(true)
+            .timeout(Duration.ofSeconds(2))
+            .switchIfEmpty(Mono.error(new DatosInvalidosException("R_EDI","Retorno vacio","empty","ObjetoService","readById")))
             .onErrorMap(e -> validadorsql.detectarMotivoError(e,"ObjetoService","delete"));
     }
 }

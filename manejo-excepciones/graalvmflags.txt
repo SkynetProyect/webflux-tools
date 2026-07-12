@@ -1,0 +1,9 @@
+Flag	Qué controla	Ejemplo
+-XX:MaxDirectMemorySize	Límite de memoria fuera del heap usada por buffers NIO directos (ByteBuffer.allocateDirect).	-XX:MaxDirectMemorySize=64m
+-XX:MaxHeapFree	Cantidad máxima de memoria libre que el GC Serial mantiene reservada dentro del heap antes de devolverla al sistema.	-XX:MaxHeapFree=50m
+-XX:MaxHeapSize	Tamaño máximo del heap Java. Es el equivalente más cercano a -Xmx.	-XX:MaxHeapSize=256m
+-XX:MaxNewSize	Tamaño máximo de la generación joven (young generation). Solo aplica a GC que tengan generaciones (Serial GC).	-XX:MaxNewSize=64m
+-XX:MaxRAM	Memoria física disponible que el runtime considera como base para calcular otros límites. Por defecto detecta la memoria del host/contenedor.	-XX:MaxRAM=512m
+-XX:MaximumHeapSizePercent	Porcentaje de MaxRAM que puede usar el heap máximo.	-XX:MaximumHeapSizePercent=50
+-XX:MaximumYoungGenerationSizePercent	Porcentaje del heap máximo destinado a la generación joven.	-XX:MaximumYoungGenerationSizePercent=20
+-XX:MinHeapSize	Tamaño mínimo del heap. Es parecido a -Xms.	-XX:MinHeapSize=128m

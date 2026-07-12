@@ -8,6 +8,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import com.graalvm.compilationtest.dto.respuesta.Respuesta;
 import jakarta.validation.ConstraintViolationException;
+import java.io.IOException;
+
+import java.net.ConnectException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeoutException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -74,18 +84,27 @@ public class GlobalExceptionHandler {
                         null
                 ));
         }
-/*
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Respuesta> errorGenerico(
-            Exception e) {
+
+        @ExceptionHandler({
+        TimeoutException.class,
+        IOException.class,
+        ConnectException.class,
+        SocketException.class,
+        SocketTimeoutException.class,
+        UnknownHostException.class,
+        RejectedExecutionException.class,
+        CancellationException.class,
+        InterruptedException.class
+        })
+        public ResponseEntity<Respuesta> resourceError(Exception error) {
 
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(new Respuesta(
-                        "Error general",
-                        e,
+                        "Fallo de recursos",
+                        error.getMessage(),
                         null
                 ));
-    }
-    */
+        }
+
 }

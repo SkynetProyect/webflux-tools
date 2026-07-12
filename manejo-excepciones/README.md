@@ -15,3 +15,9 @@ Para visualizar los metodos disponibles: http://localhost:8080/webjars/swagger-u
 Generate coverage y enviar a sonar:
 
 ./gradlew test jacocoTestReport sonar
+
+
+DATA USAGE:
+-- Estos datos se recopilan con los valores obtenidos en docker stats tras lanzar la imagen docker construida --
+
+Ejecucion inicial hace uso de 45.21 MiB RAM

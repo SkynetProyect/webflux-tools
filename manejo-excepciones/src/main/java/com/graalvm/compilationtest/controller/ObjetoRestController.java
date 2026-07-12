@@ -31,23 +31,14 @@ import jakarta.validation.constraints.Null;
 public class ObjetoRestController {
 
     private final ObjetoServiceInterface objetoService;
-
+    private final String respuestaCodeOk = "200";
     public ObjetoRestController(ObjetoServiceInterface objetoService) {
         this.objetoService = objetoService;
     }
     
-    @GetMapping("/all")
-    public Mono<ResponseEntity<Respuesta>> readAll() {
-        return objetoService.readAll()
-                .collectList()
-                .map( retorno -> ResponseEntity
-                                .status(HttpStatus.OK)
-                                .body(new Respuesta(
-                                    "200",
-                                    "Entidades listadas",
-                                    retorno)
-                                )
-          );
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_NDJSON_VALUE)
+    public Flux<Objeto> readAll() {
+        return objetoService.readAll();
     }
 
     @GetMapping("/byId/{id}")
@@ -60,7 +51,7 @@ public class ObjetoRestController {
                 .map( retorno -> ResponseEntity
                                 .status(HttpStatus.OK)
                                 .body(new Respuesta(
-                                    "200",
+                                    respuestaCodeOk,
                                     "Entidad encontrada",
                                     retorno)
                                 )
@@ -69,12 +60,11 @@ public class ObjetoRestController {
 
     @PostMapping
     public Mono<ResponseEntity<Respuesta>> create(@Valid @RequestBody ObjetoCreateDto objeto) {
-        Objeto mapeo = new Objeto().setNombre(objeto.nombre());
-        return objetoService.create(mapeo)
+        return objetoService.create(new Objeto().setNombre(objeto.nombre()))
                 .map( retorno -> ResponseEntity
                                 .status(HttpStatus.OK)
                                 .body(new Respuesta(
-                                    "200",
+                                    respuestaCodeOk,
                                     "Entidad Creada",
                                     retorno)
                                 )
@@ -83,12 +73,11 @@ public class ObjetoRestController {
 
     @PutMapping
     public Mono<ResponseEntity<Respuesta>> update(@Valid @RequestBody ObjetoUpdateDto objeto) {
-        Objeto mapeo = new Objeto().setId(objeto.id()).setNombre(objeto.nombre());
-        return objetoService.update(mapeo)
+        return objetoService.update(new Objeto().setId(objeto.id()).setNombre(objeto.nombre()))
                 .map( retorno -> ResponseEntity
                                 .status(HttpStatus.OK)
                                 .body(new Respuesta(
-                                    "200",
+                                    respuestaCodeOk,
                                     "Entidad Actualizada",
                                     retorno)
                                 )
@@ -105,7 +94,7 @@ public class ObjetoRestController {
                 .map( retorno -> ResponseEntity
                                 .status(HttpStatus.OK)
                                 .body(new Respuesta(
-                                    "200",
+                                    respuestaCodeOk,
                                     "Entidad eliminada",
                                     retorno)
                                 )

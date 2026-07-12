@@ -20,3 +20,10 @@ da respuesta entonces ya puedes usar:  ./gradlew nativeCompile
 
 this will generate a list of files in build/native/nativeCompile
 you have to keep them together, as it is code and libraries compiled.
+
+
+CORRER DOCKER:
+docker run -d -p 8080:8080 --memory=512m --cpus=2 --name test test
+
+METRICAS DOCKER:
+docker stats
